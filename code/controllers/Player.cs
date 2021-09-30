@@ -1,5 +1,7 @@
 ﻿using Sandbox;
 
+using SciFiPack.Ships;
+
 namespace SciFiPack.Controllers {
 	partial class Player : Sandbox.Player {
 		public override void Respawn() {
@@ -35,6 +37,14 @@ namespace SciFiPack.Controllers {
 			base.Simulate(cl);
 
 			SimulateActiveChild(cl, ActiveChild);
+
+			if (IsServer && Input.Pressed(InputButton.Attack2)) {
+				var aurora = new Aurora();
+				aurora.Position = EyePos + EyeRot.Forward * 40;
+				aurora.Rotation = Rotation.LookAt(Vector3.Random.Normal);
+				aurora.SetupPhysicsFromModel(PhysicsMotionType.Dynamic, false);
+				aurora.PhysicsGroup.Velocity = EyeRot.Forward * 1000;
+			}
 		}
 
 		public override void OnKilled() {
